@@ -6,10 +6,21 @@
 
 int main(int argc, char* argv[])
 {
-    std::cout << "MAMA" << std::endl;
+    int rows = countOfRowsInput();
+    int cols = countOfColsInput();
 
-    Matrix matrix(10, 15);
+    Matrix matrix(rows, cols);
+
+    std::cout << "Choose how you want to fill the matrix: " << std::endl
+              << "  1). With random values" << std::endl
+              << "  2). From a file" << std::endl
+              << "  3). Manually";
+    int option = optionInput(3);
+
+    matrix.Fill(option);
+
     matrix.Show();
 
+    system("pause");
     return 0;
 }

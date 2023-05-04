@@ -15,6 +15,8 @@ private:
 
 public:
     Matrix(int, int);
+    ~Matrix();
+    void Fill(int);
     void Show();
 };
 
