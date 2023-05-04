@@ -14,10 +14,11 @@ private:
     float **matrixElem;
 
 public:
-    Matrix(int, int);
+    Matrix();
     ~Matrix();
-    void Fill(int);
+    void Fill(int, int, int);
     void Show();
+    int Editor();
 };
 
 #endif

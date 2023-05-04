@@ -62,3 +62,31 @@ int optionInput(int max)
     return *option;
     delete option;
 }
+
+void greeting()
+{
+    std::cout << "Hi! This is the testing program for Individual Assignment #5." << std::endl
+              << "It presents the matrix editing function and binary inclusion sorting." << std::endl
+              << std::endl
+              << "Press Enter to continue";
+
+    int pressButton;
+    while (pressButton != ENTER)
+        pressButton = _getch();
+    system("cls");
+}
+
+void mainMenu(int &stage)
+{
+    std::cout << "Menu" << std::endl
+              << std::endl
+              << "  1). Create matrix" << std::endl
+              << "  2). View matrix" << std::endl
+              << "  3). Perform sorting" << std::endl
+              << "  4). Edit matrix" << std::endl
+              << "  5). Save matrix" << std::endl
+              << "  6). Exit" << std::endl;
+
+    stage = optionInput(6);
+    system("cls");
+}

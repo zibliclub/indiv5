@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <limits>
+#include <conio.h>
+
+#include "../constant.hpp"
 
 struct MatrixInfo
 {
@@ -13,5 +16,7 @@ struct MatrixInfo
 int countOfRowsInput();
 int countOfColsInput();
 int optionInput(int);
+void greeting();
+void mainMenu(int &);
 
 #endif
