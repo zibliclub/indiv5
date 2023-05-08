@@ -90,3 +90,66 @@ void mainMenu(int &stage)
     stage = optionInput(6);
     system("cls");
 }
+
+void createMatrix(int &stage, Matrix &matrix)
+{
+    int rows = countOfRowsInput();
+    int cols = countOfColsInput();
+
+    std::cout << std::endl
+              << "Choose how you want to fill the matrix: " << std::endl
+              << std::endl
+              << "  1). With random values" << std::endl
+              << "  2). From a file" << std::endl
+              << "  3). Manually" << std::endl;
+    int option = optionInput(3);
+
+    matrix.Fill(rows, cols, option);
+    system("cls");
+    stage = 0;
+}
+
+void viewMatrix(int &stage, Matrix &matrix)
+{
+    matrix.Show();
+    std::cout << std::endl
+              << "Press Enter to continue";
+    int pressButton = 0;
+    while (pressButton != ENTER)
+        pressButton = _getch();
+    system("cls");
+    stage = 0;
+}
+
+void saveMatrix(int &stage, Matrix &matrix)
+{
+    std::cout << "The matrix will be saved in a binary file in the 'files' directory." << std::endl
+              << std::endl
+              << "Specify the file name (without .txt): ";
+    std::string fileName, name;
+    std::cin >> name;
+    fileName = "../../files/" + name + ".txt"; 
+
+    matrix.Save(fileName);
+
+    system("cls");
+    stage = 0;
+}
+
+void exitProgram(int &stage)
+{
+    std::cout << "Are you sure you want to complete the program?" << std::endl
+              << "All unsaved data will be lost." << std::endl
+              << std::endl
+              << "  1). Exit" << std::endl
+              << "  2). Return" << std::endl;
+
+    int option = optionInput(2);
+    if (option == 2)
+    {
+        stage = 0;
+        system("cls");
+    }
+    else
+        stage = -1;
+}

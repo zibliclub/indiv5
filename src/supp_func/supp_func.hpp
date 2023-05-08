@@ -6,17 +6,16 @@
 #include <conio.h>
 
 #include "../constant.hpp"
-
-struct MatrixInfo
-{
-    int rows;
-    int cols;
-};
+#include "../matrix_class/matrix_class.hpp"
 
 int countOfRowsInput();
 int countOfColsInput();
 int optionInput(int);
 void greeting();
 void mainMenu(int &);
+void createMatrix(int &, Matrix &);
+void viewMatrix(int &, Matrix &);
+void exitProgram(int &);
+void saveMatrix(int &, Matrix &);
 
 #endif
