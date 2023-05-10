@@ -1,9 +1,9 @@
 #include "indiv_func.hpp"
 
-void sortBinInsert(float **a, int n) // Сортировка бинарными вставками
+void sortBinInsert(int *a, int n) // Сортировка бинарными вставками
 {
     int left, right, sred;
-    float *x;
+    float x;
 
     for (int i = 1; i < n; i++)
     {

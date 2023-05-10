@@ -28,7 +28,9 @@ int main(int argc, char *argv[])
             break;
 
         case PERFORM_SORT:
-            /* code */
+            matrix.Sort();
+            system("pause");
+            programStage = MAIN_MENU;
             break;
 
         case EDIT_MATRIX:

@@ -19,7 +19,7 @@ class Matrix
 {
 private:
     MatrixInfo matrix;
-    float **matrixElem;
+    int **matrixElem;
 
 public:
     Matrix();

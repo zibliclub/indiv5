@@ -3,6 +3,6 @@
 
 #include <iostream>
 
-void sortBinInsert(float **, int);
+void sortBinInsert(int *, int);
 
 #endif

@@ -15,9 +15,9 @@ void Matrix::Fill(int rows, int cols, int option)
     matrix.rows = rows;
     matrix.cols = cols;
     matrix.number = rows * cols;
-    matrixElem = new float *[matrix.rows];
+    matrixElem = new int *[matrix.rows];
     for (int count = 0; count < matrix.rows; count++)
-        matrixElem[count] = new float[matrix.cols];
+        matrixElem[count] = new int[matrix.cols];
 
     switch (option)
     {
@@ -25,7 +25,7 @@ void Matrix::Fill(int rows, int cols, int option)
         srand(time(0));
         for (int count_row = 0; count_row < matrix.rows; count_row++)
             for (int count_column = 0; count_column < matrix.cols; count_column++)
-                matrixElem[count_row][count_column] = (rand() % 10 + 1) / float((rand() % 10 + 1));
+                matrixElem[count_row][count_column] = rand() % 10 + 1;
         break;
     case 2:
     {
@@ -67,28 +67,71 @@ void Matrix::Show()
 
 void Matrix::Sort()
 {
-    // sortBinInsert(matrixElem, matrix.number);
-    int left, right, sred;
-    float *x;
-
-    for (int i = 1; i < matrix.number; i++)
+    struct element
     {
-        if (matrixElem[i - 1] > matrixElem[i])
+        int value;
+        int num;
+    };
+
+    element absValOfTheSumsOfMatrixRowElem[matrix.rows];
+    for (int count_row = 0; count_row < matrix.rows; count_row++)
+    {
+        absValOfTheSumsOfMatrixRowElem[count_row].value = 0;
+        absValOfTheSumsOfMatrixRowElem[count_row].num = count_row;
+        for (int count_column = 0; count_column < matrix.cols; count_column++)
+            absValOfTheSumsOfMatrixRowElem[count_row].value += matrixElem[count_row][count_column];
+        absValOfTheSumsOfMatrixRowElem[count_row].value = abs(absValOfTheSumsOfMatrixRowElem[count_row].value);
+    }
+    for (int i = 0; i < matrix.rows; i++)
+        std::cout << absValOfTheSumsOfMatrixRowElem[i].value << " " << absValOfTheSumsOfMatrixRowElem[i].num << std::endl;
+
+    int left, right, middle;
+    element x;
+
+    for (int i = 1; i < matrix.rows; i++)
+    {
+        if (absValOfTheSumsOfMatrixRowElem[i - 1].value > absValOfTheSumsOfMatrixRowElem[i].value)
         {
-            x = matrixElem[i]; // x – включаемый элемент
-            left = 0;          // левая граница отсортированной части массива
-            right = i - 1;     // правая граница отсортированной части массива
+            x = absValOfTheSumsOfMatrixRowElem[i];
+            left = 0;
+            right = i - 1;
             do
             {
-                sred = (left + right) / 2; // sred – новая "середина" последовательности
-                if (matrixElem[sred] < x)
-                    left = sred + 1;
+                middle = (left + right) / 2;
+                if (absValOfTheSumsOfMatrixRowElem[middle].value < x.value)
+                    left = middle + 1;
                 else
-                    right = sred - 1;
-            } while (left <= right); // поиск ведется до тех пор, пока левая граница не окажется правее правой границы
+                    right = middle - 1;
+            } while (left <= right);
             for (int j = i - 1; j >= left; j--)
-                matrixElem[j + 1] = matrixElem[j];
-            matrixElem[left] = x;
+                absValOfTheSumsOfMatrixRowElem[j + 1] = absValOfTheSumsOfMatrixRowElem[j];
+            absValOfTheSumsOfMatrixRowElem[left] = x;
+        }
+    }
+
+    std::cout << std::endl;
+    for (int i = 0; i < matrix.rows; i++)
+        std::cout << absValOfTheSumsOfMatrixRowElem[i].value << " " << absValOfTheSumsOfMatrixRowElem[i].num << std::endl;
+
+    int changingRows[matrix.cols];
+    for (int i = 0; i < matrix.rows; i++)
+    {
+        if (absValOfTheSumsOfMatrixRowElem[i].num != i)
+        {
+            int c = absValOfTheSumsOfMatrixRowElem[i].num;
+
+            for (int j = 0; j < matrix.rows; j++)
+            {
+                if (absValOfTheSumsOfMatrixRowElem[j].num == i)
+                {
+                    for (int j = 0; j < matrix.cols; j++)
+                        changingRows[j] = matrixElem[i][j];
+                    for (int j = 0; j < matrix.cols; j++)
+                        matrixElem[i][j] = matrixElem[absValOfTheSumsOfMatrixRowElem[i].num][j];
+                    for (int j = 0; j < matrix.cols; j++)
+                        matrixElem[absValOfTheSumsOfMatrixRowElem[i].num][j] = changingRows[j];
+                }
+            }   
         }
     }
 }
