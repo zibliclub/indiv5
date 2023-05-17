@@ -63,6 +63,24 @@ int optionInput(int max)
     delete option;
 }
 
+int intInput()
+{
+    int N;
+    for (;;)
+    {
+        if ((std::cin >> N).good())
+            return N;
+        if (std::cin.fail())
+        {
+            std::cin.clear();
+            std::cout << "Incorrect input, try again" << std::endl;
+        }
+        else
+            std::cout << "The number is out of the valid value range. Repeat the entry" << std::endl;
+        std::cin.ignore(100, '\n');
+    }
+}
+
 void greeting()
 {
     std::cout << "Hi! This is the testing program for Individual Assignment #5." << std::endl
@@ -128,7 +146,7 @@ void saveMatrix(int &stage, Matrix &matrix)
               << "Specify the file name (without .txt): ";
     std::string fileName, name;
     std::cin >> name;
-    fileName = "../../files/" + name + ".txt"; 
+    fileName = "../../files/" + name + ".txt";
 
     matrix.Save(fileName);
 

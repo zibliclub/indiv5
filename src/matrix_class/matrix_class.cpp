@@ -6,25 +6,25 @@ Matrix::Matrix()
 
 Matrix::~Matrix()
 {
-    for (int count = 0; count < matrix.rows; count++)
+    for (int count = 0; count < matrixInfo.rows; count++)
         delete[] matrixElem[count];
 }
 
 void Matrix::Fill(int rows, int cols, int option)
 {
-    matrix.rows = rows;
-    matrix.cols = cols;
-    matrix.number = rows * cols;
-    matrixElem = new int *[matrix.rows];
-    for (int count = 0; count < matrix.rows; count++)
-        matrixElem[count] = new int[matrix.cols];
+    matrixInfo.rows = rows;
+    matrixInfo.cols = cols;
+    matrixInfo.number = rows * cols;
+    matrixElem = new int *[matrixInfo.rows];
+    for (int count = 0; count < matrixInfo.rows; count++)
+        matrixElem[count] = new int[matrixInfo.cols];
 
     switch (option)
     {
     case 1:
         srand(time(0));
-        for (int count_row = 0; count_row < matrix.rows; count_row++)
-            for (int count_column = 0; count_column < matrix.cols; count_column++)
+        for (int count_row = 0; count_row < matrixInfo.rows; count_row++)
+            for (int count_column = 0; count_column < matrixInfo.cols; count_column++)
                 matrixElem[count_row][count_column] = rand() % 10 + 1;
         break;
     case 2:
@@ -38,15 +38,30 @@ void Matrix::Fill(int rows, int cols, int option)
         fileName = "../../files/" + name + ".txt";
 
         std::fstream file(fileName, std::ios::in | std::ios::binary);
-        for (int count_row = 0; count_row < matrix.rows; count_row++)
-            for (int count_column = 0; count_column < matrix.cols; count_column++)
+        for (int count_row = 0; count_row < matrixInfo.rows; count_row++)
+            for (int count_column = 0; count_column < matrixInfo.cols; count_column++)
                 file.read((char *)&matrixElem[count_row][count_column], sizeof(matrixElem));
         file.close();
         break;
     }
 
     case 3:
-        /* code */
+        std::cout << std::endl
+                  << "Enter n whole numbers (where n=" << matrixInfo.number << "):" << std::endl
+                  << std::endl;
+        for (int count_row = 0; count_row < matrixInfo.rows; count_row++)
+            for (int count_column = 0; count_column < matrixInfo.cols; count_column++)
+            {
+                int num;
+                while (!(std::cin >> num))
+                {
+                    std::cin.clear();
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    std::cout << "Not an integer was entered, try again" << std::endl
+                              << std::endl;
+                };
+                matrixElem[count_row][count_column] = num;
+            }
         break;
 
     default:
@@ -57,11 +72,16 @@ void Matrix::Fill(int rows, int cols, int option)
 
 void Matrix::Show()
 {
-    for (int count_row = 0; count_row < matrix.rows; count_row++)
+    if (matrixInfo.number == 0)
+        std::cout << "The matrix is not created" << std::endl;
+    else
     {
-        for (int count_column = 0; count_column < matrix.cols; count_column++)
-            std::cout << std::setw(5) << std::setprecision(2) << matrixElem[count_row][count_column] << "   ";
-        std::cout << std::endl;
+        for (int count_row = 0; count_row < matrixInfo.rows; count_row++)
+        {
+            for (int count_column = 0; count_column < matrixInfo.cols; count_column++)
+                std::cout << std::setw(5) << std::setprecision(2) << matrixElem[count_row][count_column] << "   ";
+            std::cout << std::endl;
+        }
     }
 }
 
@@ -73,22 +93,22 @@ void Matrix::Sort()
         int num;
     };
 
-    element absValOfTheSumsOfMatrixRowElem[matrix.rows];
-    for (int count_row = 0; count_row < matrix.rows; count_row++)
+    element absValOfTheSumsOfMatrixRowElem[matrixInfo.rows];
+    for (int count_row = 0; count_row < matrixInfo.rows; count_row++)
     {
         absValOfTheSumsOfMatrixRowElem[count_row].value = 0;
         absValOfTheSumsOfMatrixRowElem[count_row].num = count_row;
-        for (int count_column = 0; count_column < matrix.cols; count_column++)
+        for (int count_column = 0; count_column < matrixInfo.cols; count_column++)
             absValOfTheSumsOfMatrixRowElem[count_row].value += matrixElem[count_row][count_column];
         absValOfTheSumsOfMatrixRowElem[count_row].value = abs(absValOfTheSumsOfMatrixRowElem[count_row].value);
     }
-    for (int i = 0; i < matrix.rows; i++)
+    for (int i = 0; i < matrixInfo.rows; i++)
         std::cout << absValOfTheSumsOfMatrixRowElem[i].value << " " << absValOfTheSumsOfMatrixRowElem[i].num << std::endl;
 
     int left, right, middle;
     element x;
 
-    for (int i = 1; i < matrix.rows; i++)
+    for (int i = 1; i < matrixInfo.rows; i++)
     {
         if (absValOfTheSumsOfMatrixRowElem[i - 1].value > absValOfTheSumsOfMatrixRowElem[i].value)
         {
@@ -110,28 +130,28 @@ void Matrix::Sort()
     }
 
     std::cout << std::endl;
-    for (int i = 0; i < matrix.rows; i++)
+    for (int i = 0; i < matrixInfo.rows; i++)
         std::cout << absValOfTheSumsOfMatrixRowElem[i].value << " " << absValOfTheSumsOfMatrixRowElem[i].num << std::endl;
 
-    int changingRows[matrix.cols];
-    for (int i = 0; i < matrix.rows; i++)
+    int changingRows[matrixInfo.cols];
+    for (int i = 0; i < matrixInfo.rows; i++)
     {
         if (absValOfTheSumsOfMatrixRowElem[i].num != i)
         {
             int c = absValOfTheSumsOfMatrixRowElem[i].num;
 
-            for (int j = 0; j < matrix.rows; j++)
+            for (int j = 0; j < matrixInfo.rows; j++)
             {
                 if (absValOfTheSumsOfMatrixRowElem[j].num == i)
                 {
-                    for (int j = 0; j < matrix.cols; j++)
+                    for (int j = 0; j < matrixInfo.cols; j++)
                         changingRows[j] = matrixElem[i][j];
-                    for (int j = 0; j < matrix.cols; j++)
+                    for (int j = 0; j < matrixInfo.cols; j++)
                         matrixElem[i][j] = matrixElem[absValOfTheSumsOfMatrixRowElem[i].num][j];
-                    for (int j = 0; j < matrix.cols; j++)
+                    for (int j = 0; j < matrixInfo.cols; j++)
                         matrixElem[absValOfTheSumsOfMatrixRowElem[i].num][j] = changingRows[j];
                 }
-            }   
+            }
         }
     }
 }
@@ -139,8 +159,8 @@ void Matrix::Sort()
 void Matrix::Save(std::string fileName)
 {
     std::fstream file(fileName, std::ios::out | std::ios::binary);
-    for (int count_row = 0; count_row < matrix.rows; count_row++)
-        for (int count_column = 0; count_column < matrix.cols; count_column++)
+    for (int count_row = 0; count_row < matrixInfo.rows; count_row++)
+        for (int count_column = 0; count_column < matrixInfo.cols; count_column++)
             file.write((const char *)&matrixElem[count_row][count_column], sizeof(matrixElem));
     file.close();
 }

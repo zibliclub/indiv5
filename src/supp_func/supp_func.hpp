@@ -11,6 +11,7 @@
 int countOfRowsInput();
 int countOfColsInput();
 int optionInput(int);
+int intInput();
 void greeting();
 void mainMenu(int &);
 void createMatrix(int &, Matrix &);
